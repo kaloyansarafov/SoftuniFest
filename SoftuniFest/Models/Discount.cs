@@ -18,7 +18,7 @@ public class Discount
     public DiscountStatus Status { get; set; }
     
     [ForeignKey("MerchantId")]
-    public virtual Merchant? Merchant { get; set; }
+    public virtual User? Merchant { get; set; }
 }
 
 public enum DiscountStatus

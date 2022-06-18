@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftuniFest", "SoftuniFest\SoftuniFest.csproj", "{1B394D52-B207-479C-8540-E4B1F0787AAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWHApi", "DWHApi\DWHApi.csproj", "{11BC77EE-E7AC-454A-8248-CBBB9AD92E19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{1B394D52-B207-479C-8540-E4B1F0787AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B394D52-B207-479C-8540-E4B1F0787AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B394D52-B207-479C-8540-E4B1F0787AAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11BC77EE-E7AC-454A-8248-CBBB9AD92E19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11BC77EE-E7AC-454A-8248-CBBB9AD92E19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11BC77EE-E7AC-454A-8248-CBBB9AD92E19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11BC77EE-E7AC-454A-8248-CBBB9AD92E19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

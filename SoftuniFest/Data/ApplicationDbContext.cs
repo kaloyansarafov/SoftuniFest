@@ -20,14 +20,6 @@ public class ApplicationDbContext : IdentityDbContext
         {
             entity.ToTable(name: "Users");
         });
-        builder.Entity<Merchant>(entity =>
-        {
-            entity.ToTable(name: "Merchants");
-        });
-        builder.Entity<Employee>(entity =>
-        {
-            entity.ToTable(name: "Employees");
-        });
         builder.Entity<IdentityRole>(entity =>
         {
             entity.ToTable(name: "Roles");
@@ -55,8 +47,6 @@ public class ApplicationDbContext : IdentityDbContext
     }
     
     public DbSet<User> Users { get; set; }
-    public DbSet<Merchant> Merchants { get; set; }
-    public DbSet<Employee> Employees { get; set; }
     public DbSet<Discount> Discounts { get; set; }
     public DbSet<Terminal> Terminals { get; set; }
 }
