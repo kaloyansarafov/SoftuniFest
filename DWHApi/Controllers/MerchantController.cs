@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DWHApi;
 using DWHApi.Models;
@@ -20,17 +21,24 @@ namespace DWHApi.Controllers
         {
             _context = context;
         }
-
+        
         // GET: api/Merchant
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Merchant>>> GetMerchants()
+        {
+            return await _context.Merchants.ToListAsync();
+        }
+        
+        // GET: api/Merchant
+        [HttpGet("{pageSize}/{pageNumber}")]
+        public async Task<ActionResult<IEnumerable<Merchant>>> GetMerchants(int pageSize, int pageNumber)
         {
             if (_context.Merchants == null)
             {
                 return NotFound();
             }
 
-            return await _context.Merchants.ToListAsync();
+            return await _context.Merchants.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
         // GET: api/Merchant/5
@@ -91,6 +99,21 @@ namespace DWHApi.Controllers
             if (_context.Merchants == null)
             {
                 return Problem("Entity set 'DWHDbContext.Merchants'  is null.");
+            }
+
+            //password hashing and verification
+            var hasher = new PasswordHasher<Merchant>();
+            var oldPassword = merchant.PasswordHash;
+            var newPassword = hasher.HashPassword(merchant, oldPassword);
+            var newPasswordVerify = hasher.VerifyHashedPassword(merchant, newPassword, oldPassword);
+
+            if (newPasswordVerify == PasswordVerificationResult.Success)
+            {
+                merchant.PasswordHash = newPassword;
+            }
+            else
+            {
+                return BadRequest("Password hashing failed.");
             }
 
             _context.Merchants.Add(merchant);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DWHApi;
 using DWHApi.Models;
@@ -20,26 +21,35 @@ namespace DWHApi.Controllers
         {
             _context = context;
         }
-
+        
         // GET: api/Employee
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-          if (_context.Employees == null)
-          {
-              return NotFound();
-          }
             return await _context.Employees.ToListAsync();
+        }
+
+        // GET: api/Employee/10/5
+        [HttpGet("{pageSize}/{pageNumber}")]
+        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees(int pageSize, int pageNumber)
+        {
+            if (_context.Employees == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.Employees.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync();
         }
 
         // GET: api/Employee/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(string id)
         {
-          if (_context.Employees == null)
-          {
-              return NotFound();
-          }
+            if (_context.Employees == null)
+            {
+                return NotFound();
+            }
+
             var employee = await _context.Employees.FindAsync(id);
 
             if (employee == null)
@@ -86,10 +96,21 @@ namespace DWHApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
-          if (_context.Employees == null)
-          {
-              return Problem("Entity set 'DWHDbContext.Employees'  is null.");
-          }
+            //password hashing and verification
+            var hasher = new PasswordHasher<Employee>();
+            var oldPassword = employee.PasswordHash;
+            var newPassword = hasher.HashPassword(employee, oldPassword);
+            var newPasswordVerify = hasher.VerifyHashedPassword(employee, newPassword, oldPassword);
+
+            if (newPasswordVerify == PasswordVerificationResult.Success)
+            {
+                employee.PasswordHash = newPassword;
+            }
+            else
+            {
+                return BadRequest("Password hashing failed.");
+            }
+            
             _context.Employees.Add(employee);
             try
             {
@@ -118,6 +139,7 @@ namespace DWHApi.Controllers
             {
                 return NotFound();
             }
+
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {

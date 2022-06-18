@@ -22,15 +22,15 @@ namespace DWHApi.Controllers
         }
 
         // GET: api/Terminal
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Terminal>>> GetTerminals()
+        [HttpGet("{pageSize}/{pageNumber}")]
+        public async Task<ActionResult<IEnumerable<Terminal>>> GetTerminals(int pageSize, int pageNumber)
         {
             if (_context.Terminals == null)
             {
                 return NotFound();
             }
 
-            return await _context.Terminals.ToListAsync();
+            return await _context.Terminals.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
         // GET: api/Terminal/5

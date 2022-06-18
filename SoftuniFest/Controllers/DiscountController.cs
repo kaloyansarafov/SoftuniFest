@@ -20,11 +20,13 @@ namespace SoftuniFest.Controllers
             _context = context;
         }
 
-        // GET: Discount
-        public async Task<IActionResult> Index()
+        // GET: Discount/9/1
+        // implement pagination
+        
+        public async Task<IActionResult> Index(int pageSize = 9, int page = 1)
         {
-            var applicationDbContext = _context.Discounts.Include(d => d.Merchant);
-            return View(await applicationDbContext.ToListAsync());
+            var discounts = await _context.Discounts.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            return View(discounts);
         }
 
         // GET: Discount/Details/5

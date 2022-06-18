@@ -6,6 +6,8 @@ public class User : IdentityUser
 {
     public string? CardNumber { get; set; }
 
+    public bool IsReceivingNotifications { get; set; }
+    
     public DateOnly? CardExpirationDate { get; set; }
 
     public DateTime? RegistrationDate { get; set; }

@@ -49,6 +49,9 @@ using (var scope = app.Services.CreateScope())
 {
     var roleManager = (RoleManager<IdentityRole>)scope.ServiceProvider.GetService(typeof(RoleManager<IdentityRole>))!;
     SeedDataApplicationRoles.SeedAspNetRoles(roleManager);
+    
+    var userManager = (UserManager<User>)scope.ServiceProvider.GetService(typeof(UserManager<User>))!;
+    
 }
 
 app.UseAuthentication();
