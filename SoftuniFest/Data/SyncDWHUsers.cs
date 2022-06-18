@@ -16,5 +16,9 @@ public class SyncDWHUsers
         
         //contact the api at https://localhost:7223/api/Merchant/
         
+        
+        
     }
+    
+    
 }
