@@ -83,6 +83,11 @@ namespace SoftuniFest.Areas.Identity.Pages.Account
             public string Email { get; set; }
             
             [Required]
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
+            
+            [Required]
             [StringLength(19, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 13)]
             [Display(Name = "Card Number")]
             public string CardNumber { get; set; }
@@ -147,6 +152,7 @@ namespace SoftuniFest.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     await _userManager.AddToRoleAsync(user, Data.ApplicationRoles.User.ToString());
+                    await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                     
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
